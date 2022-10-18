@@ -41,11 +41,12 @@ int game_can_move(const game_info_t* info,
 
 	// Make sure color is valid
 	assert(color < info->num_colors);
-
+    // if colour is already completed
 	assert(!(state->completed & (1 << color)));
 
 	// Get cur pos x, y
 	int cur_x, cur_y;
+    // gets current position of color (x, y)
 	pos_get_coords(state->pos[color], &cur_x, &cur_y);
 
 	// Get new x, y
@@ -225,7 +226,7 @@ int game_next_move_color(const game_info_t* info,
 int game_num_free_coords(const game_info_t* info,
                          const game_state_t* state,
                          int x, int y) {
-
+    // add the condition of being goal positions
 	int num_free = 0;
   
 	for (int dir=0; dir<4; ++dir) {
@@ -241,7 +242,7 @@ int game_num_free_coords(const game_info_t* info,
 }
 
 //////////////////////////////////////////////////////////////////////
-// Return the number of free spaces around an 8-bit position
+// Return the number of free spaces around an 8-bit position (ie pos is 8 bits (input pos not x, y))
 
 int game_num_free_pos(const game_info_t* info,
                       const game_state_t* state,
@@ -365,12 +366,12 @@ int game_read(const char* filename,
 			uint8_t c = s[x];
       
 			if (isalpha(c)) {
-
+                // finds position from top left
 				pos_t pos = pos_from_coords(x, y);
 				assert(pos < MAX_CELLS);
-
+                // makes color equal the color num in table (char index) (255 if unseen otherwise < num_colors)
 				int color = info->color_tbl[c];
-        
+                // only true if first color (out of the 2)
 				if (color >= info->num_colors) {
 
 					color = info->num_colors;
@@ -397,6 +398,7 @@ int game_read(const char* filename,
           
 					++info->num_colors;
 					info->color_tbl[c] = color;
+                    // the position of each color is kept track of by pos[color]
 					info->init_pos[color] = state->pos[color] = pos;
 					state->cells[pos] = cell_create(TYPE_INIT, color, 0);
 

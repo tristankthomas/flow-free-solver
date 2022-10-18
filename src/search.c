@@ -83,10 +83,10 @@ int game_dijkstra_search(const game_info_t* info,
 	size_t max_nodes;
 
 	
-	initialize_search( &max_nodes, info, init_state );
+	initialize_search(&max_nodes, info, init_state);
 
 	//Create Root node (uncomment code below)
-	//tree_node_t* root = node_create(NULL, info, init_state);
+	tree_node_t* root = node_create(NULL, info, init_state);
 
 	//Create Priority Queue
 	heapq_t pq = heapq_create(max_nodes);
@@ -98,48 +98,51 @@ int game_dijkstra_search(const game_info_t* info,
 	double start = now();
 
 	//Enqueue root
-		
+	heapq_enqueue(&pq, root);
 
-	/**
-	 * FILL IN THE CODE BELOW TO PERFORM DIJKSTRA OVER THE POSSIBLE 
-	 * MOVES TO SOLVE FLOW GAME
-	 */
-	
 	
 	//While no solution found
-
+    while (!(heapq_empty(&pq))) {
 		//Remove node from Queue, in order to generate its successors
-
+        tree_node_t *node = heapq_deque(&pq);
+        int next_colour = game_next_move_color(info, &node->state);
 		//Get next color to explore its 4 directions
-	        //(use game_next_move_color function in engine.h)
+        for (int direction = DIR_LEFT; direction <= DIR_DOWN; direction++) {
 
 			//Check move in that direction is possible 
 			//Within the rules of the game (see engine.h)
-
+            if (game_can_move(info, &node->state, next_colour, direction)) {
 				//Create child node
+                tree_node_t *child = node_create(node, info, &node->state);
+                //Update child state given the direction
+				game_make_move(info, &child->state, next_colour, direction);
 
-				//In no more space in memory, end search (more nodes in pq than max_nodes)
+				//If no more space in memory, end search (more nodes in pq than max_nodes)
+                if (pq.count >= max_nodes) {
+                    result = SEARCH_FULL;
+                    break;
+                }
 
-				//Update child state given the direction
-				
 				//Remove node if new position creates a deadend (uncomment code below)
-				//if(g_options.node_check_deadends && game_check_deadends(info,&child->state)){
-				//	free(child);
-				//	continue;
-				//	
-				//}
+				if (g_options.node_check_deadends && game_check_deadends(info, &child->state)){
+					free(child);
+					continue;
+				}
 				
 				//Check if game is solved (uncomment code below)
-				//if ( is_solved(child, info) ) {          
-				//	result = SEARCH_SUCCESS;
-				//	solution_node = child;
-				//	*final_state = solution_node->state;
-				//	break;     
-				//}
+				if (is_solved(child, info)) {          
+					result = SEARCH_SUCCESS;
+					solution_node = child;
+					*final_state = solution_node->state;
+					break;     
+				}
 
 				//Add child to the queue
+                heapq_enqueue(&pq, child);
+            }
+        }
 				
-				
+    }	
 
 
 
