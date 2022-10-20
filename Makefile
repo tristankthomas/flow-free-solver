@@ -1,6 +1,7 @@
 CC=gcc
-#CPPFLAGS= -Wall  -Werror  -O3 -g 
-CPPFLAGS= -Wall  -Werror  -g 
+CPPFLAGS= -Wall  -Werror  -O3 -g 
+
+#CPPFLAGS= -Wall  -Werror  -g 
 LDFLAGS = -lm
 
 SRC=src/node.o src/options.o src/utils.o src/extensions.o src/queues.o src/engine.o src/search.o src/flow_solver.o

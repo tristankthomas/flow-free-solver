@@ -16,7 +16,6 @@ void game_order_colors(game_info_t* info, game_state_t* state);
 // purposes of this check, cur and goal positions count as "free".
 
 int game_check_deadends(const game_info_t* info, const game_state_t* state);
-
 int game_is_deadend(const game_info_t* info, const game_state_t* state, pos_t pos);
 
 #endif

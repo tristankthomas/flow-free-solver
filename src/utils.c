@@ -140,11 +140,11 @@ int coords_valid(const game_info_t* info,
 }
 
 //////////////////////////////////////////////////////////////////////
-// Compute an offset as a position and return whether valid or not
+// Compote an offset as a position and return whether valid or not
 
 pos_t offset_pos(const game_info_t* info,
                  int x, int y, int dir) {
-    // offsets position based on direction (delta for change)
+
 	int offset_x = x + DIR_DELTA[dir][0];
 	int offset_y = y + DIR_DELTA[dir][1];
 
@@ -154,7 +154,7 @@ pos_t offset_pos(const game_info_t* info,
 }
 
 //////////////////////////////////////////////////////////////////////
-// Compute an offset as a position and return whether valid or not
+// Compote an offset as a position and return whether valid or not
 
 pos_t pos_offset_pos(const game_info_t* info,
                      pos_t pos, int dir) {

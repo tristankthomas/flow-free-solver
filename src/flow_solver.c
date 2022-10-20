@@ -43,6 +43,11 @@ int main(int argc, char** argv) {
 	game_state_t state;
   
 	int max_width = 11;
+    int num_free = 0;
+
+    // file to output csv file of data
+    // FILE *output_file = fopen("output.csv", "a");
+    //fprintf(output_file, "puzzle_name,free_spaces,solvable,time,nodes,deadend\n");
 
 	for (size_t i=0; i<num_inputs; ++i) {
 		int l = strlen(input_files[i]);
@@ -77,12 +82,18 @@ int main(int argc, char** argv) {
 			double elapsed;
 			size_t nodes;
 			game_state_t final_state = state;
-
+            //int length = strlen(input_file);
+            // shortened name for csv
+            // char shortened_name[length];
+            // strcpy(shortened_name, input_file);
+            // shortened_name[length - 4] = '\0';
 			if (g_options.display_quiet) { 
 				printf("%*s ", max_width, input_file);
+                // for csv
+                // fprintf(output_file, "%s,", shortened_name + 9);
 				fflush(stdout);
 			}
-
+            num_free = state.num_free;
 
 			int result = game_dijkstra_search(&info, &state, &elapsed, &nodes, &final_state);
 			
@@ -107,9 +118,10 @@ int main(int argc, char** argv) {
 
 			}
 			else {
-				printf("%c %'12.3f %'12zu\n",
-				       SEARCH_RESULT_CHARS[result],
-				       elapsed, nodes);
+				printf("%c %'12.3f %'12zu\n", SEARCH_RESULT_CHARS[result], elapsed, nodes);
+                //csv file output
+                //fprintf(output_file, "%d,%c,%.8f,%zu,%d\n", num_free, SEARCH_RESULT_CHARS[result], 
+                //    elapsed, nodes, g_options.node_check_deadends);
 				
 			}
 

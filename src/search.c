@@ -141,14 +141,14 @@ int game_dijkstra_search(const game_info_t* info,
                 heapq_enqueue(&pq, child);
             }
         }
+		free(node);
 				
     }	
 
-
-
-	/**
-	 * END OF FILL IN CODE SECTION
-	 */
+	// If puzzle was not solved
+	if (!solution_node) {
+		result = SEARCH_UNREACHABLE;
+	}
 				
 	//Get Stats
 	double elapsed = now() - start;
@@ -156,10 +156,10 @@ int game_dijkstra_search(const game_info_t* info,
 	if (nodes_out)   { *nodes_out = heapq_count(&pq); }
 
 	//Report soultion
-	if( result == SEARCH_SUCCESS
+	if (result == SEARCH_SUCCESS
 	    && g_options.display_animate
-	    && !g_options.display_quiet )
-		report_solution( solution_node, info );
+	    && !g_options.display_quiet)
+		report_solution(solution_node, info);
 
 	//Report next node in Queue
 	if (result == SEARCH_FULL && g_options.display_diagnostics) {
@@ -168,7 +168,7 @@ int game_dijkstra_search(const game_info_t* info,
 		node_diagnostics(info, heapq_peek(&pq));				
 	}
 
-
+	free((tree_node_t *) solution_node);
 	heapq_destroy(&pq);
 
 	return result;

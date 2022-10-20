@@ -47,7 +47,7 @@ typedef uint8_t pos_t;
 // change as the puzzle is solved is stored here.
 typedef struct game_info_struct {
 
-	// Index in color_dict table of codes (indices are the color num)
+	// Index in color_dict table of codes
 	int    color_ids[MAX_COLORS];
 
 	// Color order
@@ -63,7 +63,7 @@ typedef struct game_info_struct {
 	// Number of colors present
 	size_t num_colors;
 
-	// Color table for looking up color ID (indicies are the char value)
+	// Color table for looking up color ID
 	uint8_t color_tbl[128];
 
   
@@ -79,7 +79,7 @@ typedef struct game_state_struct {
 	// (would not be needed for depth-first search).
 	cell_t   cells[MAX_CELLS];
 
-	// Head (as in current) position
+	// Head position
 	pos_t    pos[MAX_COLORS];
 
 	// How many free cells?
